@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- corpo do microfone -->
+    <path
+        android:fillColor="#17181C"
+        android:pathData="M44,38 a10,10 0 0 1 20,0 v14 a10,10 0 0 1 -20,0 z" />
+    <!-- suporte -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#17181C"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M34,50 a20,20 0 0 0 40,0" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#17181C"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M54,70 L54,79 M45,80 L63,80" />
+    <!-- moedinha -->
+    <path
+        android:fillColor="#127A55"
+        android:strokeColor="#FFC83D"
+        android:strokeWidth="2"
+        android:pathData="M61,37 a9,9 0 1 0 18,0 a9,9 0 1 0 -18,0 z" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M72.6,34 c-0.8,-1.1 -5.2,-1.4 -5.2,0.8 c0,2.2 5.6,1.1 5.6,3.7 c0,2.2 -4.6,2.1 -5.6,0.8 M70,31.6 L70,42.4" />
+</vector>

@@ -1,0 +1,70 @@
+name: Gerar APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apk
+  cancel-in-progress: false
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Instalar Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.14.3"
+
+      - name: Testar o interpretador de frases
+        run: node tests/test_parser.js
+
+      - name: Compilar APK
+        run: |
+          set -o pipefail
+          gradle assembleRelease --no-daemon 2>&1 | tee build.log
+
+      - name: Mostrar erros do build
+        if: failure()
+        run: |
+          [ -f build.log ] || exit 0
+          grep -n -E "error:|^e: |What went wrong|FAILED|Exception|Could not|> " build.log | head -120 > erros.txt || true
+          split -l 25 erros.txt parte_
+          for f in parte_*; do
+            msg=$(sed 's/%/%25/g' "$f" | awk '{printf "%s%%0A", $0}')
+            echo "::error title=Erro no build::$msg"
+          done
+
+      - name: Renomear APK
+        run: cp app/build/outputs/apk/release/app-release.apk MeuAssessor.apk
+
+      - name: Guardar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MeuAssessor
+          path: MeuAssessor.apk
+
+      - name: Publicar versão para download
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Meu Assessor 1.0.${{ github.run_number }}
+          body: |
+            Baixe o arquivo **MeuAssessor.apk** abaixo e abra no celular para instalar.
+            Se já tem o app, é só instalar por cima: seus dados continuam lá.
+          files: MeuAssessor.apk
+          make_latest: true
